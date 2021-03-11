@@ -20,8 +20,8 @@ module.exports = {
     const entities = message.entities || []
     return {
       reply_markup: message.reply_markup,
-      parse_mode: entities.length > 0 ? 'HTML' : '',
-      text: formatHTML(message.text, entities)
+      text: message.text,
+      entities: entities
     }
   },
   contact: (message) => {
@@ -55,8 +55,8 @@ module.exports = {
       reply_markup: message.reply_markup,
       voice: message.voice.file_id,
       duration: message.voice.duration,
-      caption: formatHTML(message.caption, entities),
-      parse_mode: entities.length > 0 ? 'HTML' : ''
+      caption: message.caption,
+      caption_entities: entities
     }
   },
   audio: (message) => {
@@ -68,8 +68,8 @@ module.exports = {
       duration: message.audio.duration,
       performer: message.audio.performer,
       title: message.audio.title,
-      caption: formatHTML(message.caption, entities),
-      parse_mode: entities.length > 0 ? 'HTML' : ''
+      caption: message.caption,
+      caption_entities: entities
     }
   },
   video: (message) => {
@@ -78,8 +78,8 @@ module.exports = {
       reply_markup: message.reply_markup,
       video: message.video.file_id,
       thumb: message.video.thumb,
-      caption: formatHTML(message.caption, entities),
-      parse_mode: entities.length > 0 ? 'HTML' : '',
+      caption: message.caption,
+      caption_entities: entities,
       duration: message.video.duration,
       width: message.video.width,
       height: message.video.height,
@@ -91,8 +91,8 @@ module.exports = {
     return {
       reply_markup: message.reply_markup,
       document: message.document.file_id,
-      caption: formatHTML(message.caption, entities),
-      parse_mode: entities.length > 0 ? 'HTML' : ''
+      caption: message.caption,
+      caption_entities: entities
     }
   },
   sticker: (message) => {
@@ -106,8 +106,8 @@ module.exports = {
     return {
       reply_markup: message.reply_markup,
       photo: message.photo[message.photo.length - 1].file_id,
-      parse_mode: entities.length > 0 ? 'HTML' : '',
-      caption: formatHTML(message.caption, entities)
+      caption: message.caption,
+      caption_entities: entities,
     }
   },
   video_note: (message) => {
@@ -120,11 +120,14 @@ module.exports = {
     }
   },
   animation: (message) => {
+    const entities = message.caption_entities || []
     return {
       reply_markup: message.reply_markup,
       animation: message.animation.file_id,
       thumb: message.animation.thumb,
-      duration: message.animation.duration
+      duration: message.animation.duration,
+      caption: message.caption,
+      caption_entities: entities,
     }
   },
   poll: (message) => {
