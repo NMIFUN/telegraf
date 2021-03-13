@@ -205,7 +205,19 @@ class Telegram extends ApiClient {
   exportChatInviteLink (chatId) {
     return this.callApi('exportChatInviteLink', { chat_id: chatId })
   }
-
+  
+  createChatInviteLink (chatId, extra) {
+    return this.callApi('createChatInviteLink', { chat_id: chatId, ...extra })
+  }
+  
+  editChatInviteLink (chatId, inviteLink, extra) {
+    return this.callApi('editChatInviteLink', { chat_id: chatId, invite_link: inviteLink, ...extra })
+  }
+  
+  revokeChatInviteLink (chatId, inviteLink) {
+    return this.callApi('revokeChatInviteLink', { chat_id: chatId, invite_link: inviteLink })
+  }
+  
   setChatPhoto (chatId, photo) {
     return this.callApi('setChatPhoto', { chat_id: chatId, photo })
   }
