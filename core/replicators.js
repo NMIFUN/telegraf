@@ -1,5 +1,3 @@
-const { formatHTML } = require('../markup')
-
 module.exports = {
   copyMethods: {
     audio: 'sendAudio',
