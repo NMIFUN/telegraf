@@ -315,10 +315,10 @@ class Telegram extends ApiClient {
       message_id: messageId,
       inline_message_id: inlineMessageId,
       media: {
-        ...media,
         parse_mode: extra.parse_mode,
         caption: extra.caption,
-        caption_entities: extra.caption_entities
+        caption_entities: extra.caption_entities,
+        ...media
       },
       reply_markup: extra.reply_markup ? extra.reply_markup : extra
     })
