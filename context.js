@@ -117,6 +117,10 @@ class TelegrafContext {
   get poll () {
     return this.update.poll
   }
+  
+  get pollAnswer () {
+    return this.update.poll_answer
+  }
 
   get myChatMember () {
     return this.update.my_chat_member
@@ -147,7 +151,8 @@ class TelegrafContext {
       (this.chatMember && this.chatMember.from) ||
       (this.shippingQuery && this.shippingQuery.from) ||
       (this.preCheckoutQuery && this.preCheckoutQuery.from) ||
-      (this.chosenInlineResult && this.chosenInlineResult.from)
+      (this.chosenInlineResult && this.chosenInlineResult.from) ||
+      (this.pollAnswer && this.pollAnswer.user) 
   }
 
   get inlineMessageId () {
