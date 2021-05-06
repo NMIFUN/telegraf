@@ -588,7 +588,7 @@ class TelegrafContext {
   
   replyWithCopy (html, extra) {
     this.assert(this.chat, 'replyWithCopy')
-    return this.telegram.copyMessage(this.chat.id, ...extra)
+    return this.copyMessage(this.chat.id, ...extra)
   }
 
   deleteMessage (messageId) {
