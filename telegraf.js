@@ -125,7 +125,7 @@ class Telegraf extends Composer {
           return
         }
         return this.telegram
-          .setWebhook(`https://${domain}${hookPath}`)
+          .setWebhook(`https://${domain}${hookPath}`, config.webhook.extra)
           .then(() => debug(`Bot started with webhook @ https://${domain}`))
       })
       .catch((err) => {
