@@ -175,9 +175,13 @@ class Telegram extends ApiClient {
   }
 
   getChatMembersCount (chatId) {
-    return this.callApi('getChatMembersCount', { chat_id: chatId })
+    return this.callApi('getChatMemberCount', { chat_id: chatId })
   }
-
+  
+  getChatMemberCount (chatId) {
+    return this.callApi('getChatMemberCount', { chat_id: chatId })
+  }
+  
   answerInlineQuery (inlineQueryId, results, extra) {
     return this.callApi('answerInlineQuery', { inline_query_id: inlineQueryId, results, ...extra })
   }
@@ -187,9 +191,13 @@ class Telegram extends ApiClient {
   }
 
   kickChatMember (chatId, userId, untilDate) {
-    return this.callApi('kickChatMember', { chat_id: chatId, user_id: userId, until_date: untilDate })
+    return this.callApi('banChatMember', { chat_id: chatId, user_id: userId, until_date: untilDate })
   }
 
+  banChatMember (chatId, userId, untilDate) {
+    return this.callApi('banChatMember', { chat_id: chatId, user_id: userId, until_date: untilDate })
+  }
+  
   promoteChatMember (chatId, userId, extra) {
     return this.callApi('promoteChatMember', { chat_id: chatId, user_id: userId, ...extra })
   }
@@ -413,12 +421,16 @@ class Telegram extends ApiClient {
     return this.callApi('deleteStickerFromSet', { sticker })
   }
 
-  getMyCommands () {
-    return this.callApi('getMyCommands')
+  getMyCommands (extra) {
+    return this.callApi('getMyCommands', extra)
   }
 
-  setMyCommands (commands) {
-    return this.callApi('setMyCommands', { commands })
+  deleteMyCommands (extra) {
+    return this.callApi('deleteMyCommands', extra)
+  }
+  
+  setMyCommands (commands, extra) {
+    return this.callApi('setMyCommands', { commands, ...extra })
   }
 
   setPassportDataErrors (userId, errors) {
