@@ -207,7 +207,8 @@ const HTMLTags = new Map([
   ['strikethrough', tag('s')],
   ['underline', tag('u')],
   ['text_link', ({ url }) => tag('a', { href: url })],
-  ['text_mention', ({ user }) => tag('a', { href: `tg://user?id=${user.id}` })]
+  ['text_mention', ({ user }) => tag('a', { href: `tg://user?id=${user.id}` })],
+  ['spoiler', tag('tg-spoiler')]
 ])
 
 function getHTMLTag (entity) {
