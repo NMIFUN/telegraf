@@ -208,7 +208,7 @@ class Markup {
             result.push(`<a href="${entity.url}">`)
             break
           case 'spoiler':
-            result.push('<tg-spoiler>'
+            result.push('<tg-spoiler>')
             break            
         }
         opened.unshift(entity)
@@ -251,7 +251,7 @@ class Markup {
             result.push('</a>')
             break
           case 'spoiler':
-            result.push('</tg-spoiler>'
+            result.push('</tg-spoiler>')
             break
         }
         opened.splice(index, 1)
