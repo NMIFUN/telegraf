@@ -14,6 +14,11 @@ class Markup {
     return this
   }
 
+  inputFieldPlaceholder (placeholder) {
+    this.input_field_placeholder = placeholder
+    return this
+  }
+  
   extra (options) {
     return {
       reply_markup: { ...this },
@@ -67,8 +72,8 @@ class Markup {
     return Markup.urlButton(text, url, hide)
   }
 
-  callbackButton (text, data, hide) {
-    return Markup.callbackButton(text, data, hide)
+  callbackButton (text, data, cache_time, hide) {
+    return Markup.callbackButton(text, data, cache_time, hide)
   }
 
   switchToChatButton (text, value, hide) {
@@ -115,6 +120,10 @@ class Markup {
     return new Markup().selective(value)
   }
 
+  static inputFieldPlaceholder (placeholder) {
+    return new Markup().inputFieldPlaceholder(placeholder)
+  }
+  
   static oneTime (value = true) {
     return new Markup().oneTime(value)
   }
@@ -139,8 +148,8 @@ class Markup {
     return { text: text, url: url, hide: hide }
   }
 
-  static callbackButton (text, data, hide = false) {
-    return { text: text, callback_data: data, hide: hide }
+  static callbackButton (text, data, cache_time = 0, hide = false) {
+    return { text: text, callback_data: data, cache_time: cache_time, hide: hide }
   }
 
   static switchToChatButton (text, value, hide = false) {
