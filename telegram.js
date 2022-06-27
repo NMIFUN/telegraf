@@ -226,6 +226,14 @@ class Telegram extends ApiClient {
     return this.callApi('revokeChatInviteLink', { chat_id: chatId, invite_link: inviteLink })
   }
   
+  approveChatJoinRequest (chatId, userId) {
+    return this.callApi('approveChatJoinRequest', { chat_id: chatId, user_id: userId })
+  }
+  
+  declineChatJoinRequest (chatId, userId) {
+    return this.callApi('declineChatJoinRequest', { chat_id: chatId, user_id: userId })
+  }
+
   setChatPhoto (chatId, photo) {
     return this.callApi('setChatPhoto', { chat_id: chatId, photo })
   }

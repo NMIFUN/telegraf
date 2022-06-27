@@ -130,6 +130,10 @@ class TelegrafContext {
     return this.update.chat_member
   }
 
+  get chatJoinRequest () {
+    return this.update.chat_join_request
+  }
+
   get chat () {
     return (this.message && this.message.chat) ||
       (this.editedMessage && this.editedMessage.chat) ||
@@ -137,7 +141,8 @@ class TelegrafContext {
       (this.channelPost && this.channelPost.chat) ||
       (this.editedChannelPost && this.editedChannelPost.chat) ||
       (this.myChatMember && this.myChatMember.chat) ||
-      (this.chatMember && this.chatMember.chat)
+      (this.chatMember && this.chatMember.chat) ||
+      (this.chatJoinRequest && this.chatJoinRequest.chat)
   }
 
   get from () {
@@ -149,6 +154,7 @@ class TelegrafContext {
       (this.editedChannelPost && this.editedChannelPost.from) ||
       (this.myChatMember && this.myChatMember.from) ||
       (this.chatMember && this.chatMember.from) ||
+      (this.chatJoinRequest && this.chatJoinRequest.from) ||
       (this.shippingQuery && this.shippingQuery.from) ||
       (this.preCheckoutQuery && this.preCheckoutQuery.from) ||
       (this.chosenInlineResult && this.chosenInlineResult.from) ||
@@ -523,6 +529,16 @@ class TelegrafContext {
   replyWithContact (...args) {
     this.assert(this.from, 'replyWithContact')
     return this.telegram.sendContact(this.chat.id, ...args)
+  }
+
+  approveChatJoinRequest () {
+    this.assert(this.from, 'approveChatJoinRequest')
+    return this.telegram.approveChatJoinRequest(this.chat.id, this.from.id)
+  }
+
+  declineChatJoinRequest () {
+    this.assert(this.from, 'declineChatJoinRequest')
+    return this.telegram.declineChatJoinRequest(this.chat.id, this.from.id)
   }
 
   getStickerSet (setName) {
