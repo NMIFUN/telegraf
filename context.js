@@ -11,7 +11,8 @@ const UpdateTypes = [
   'poll',
   'poll_answer',
   'my_chat_member',
-  'chat_member'
+  'chat_member',
+  'chat_join_request'
 ]
 
 const MessageSubTypes = [
