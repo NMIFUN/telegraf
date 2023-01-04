@@ -72,8 +72,8 @@ class Markup {
     return Markup.urlButton(text, url, hide)
   }
 
-  callbackButton (text, data, cache_time, hide) {
-    return Markup.callbackButton(text, data, cache_time, hide)
+  callbackButton (text, data, hide) {
+    return Markup.callbackButton(text, data, hide)
   }
 
   switchToChatButton (text, value, hide) {
@@ -148,8 +148,8 @@ class Markup {
     return { text: text, url: url, hide: hide }
   }
 
-  static callbackButton (text, data, cache_time = 0, hide = false) {
-    return { text: text, callback_data: data, cache_time: cache_time, hide: hide }
+  static callbackButton (text, data, hide = false) {
+    return { text: text, callback_data: data, hide: hide }
   }
 
   static switchToChatButton (text, value, hide = false) {
@@ -177,109 +177,83 @@ class Markup {
   }
 
   static formatHTML (text = '', entities = []) {
-    const available = [...entities]
-    const opened = []
-    const result = []
-    for (let offset = 0; offset < text.length; offset++) {
-      while (true) {
-        const index = available.findIndex((entity) => entity.offset === offset)
-        if (index === -1) {
+    if (!text) return text
+    else if (!entities?.length) return escape(text)
+  
+    length = length ?? text.length
+  
+    const html = []
+    let lastOffset = 0
+  
+    for (let i = 0; i < entities.length; i++) {
+      const entity = entities[i]
+  
+      if (entity.offset >= offset + length) break
+  
+      const relativeOffset = entity.offset - offset
+  
+      if (relativeOffset > lastOffset) {
+        html.push(escape(text.slice(lastOffset, relativeOffset)))
+      } else if (relativeOffset < lastOffset) continue
+  
+      let skipEntity = false
+      const length_ = entity.length
+      const text_ = unparse(
+        text.slice(relativeOffset, relativeOffset + length_),
+        entities.slice(i + 1, entities.length),
+        entity.offset,
+        length_
+      )
+  
+      switch (entity.type) {
+        case 'bold':
+          html.push(`<b>${text_}</b>`)
           break
-        }
-        const entity = available[index]
-        switch (entity.type) {
-          case 'bold':
-            result.push('<b>')
-            break
-          case 'italic':
-            result.push('<i>')
-            break
-          case 'code':
-            result.push('<code>')
-            break
-          case 'pre':
-            if (entity.language) {
-              result.push(`<pre><code class="language-${entity.language}">`)
-            } else {
-              result.push('<pre>')
-            }
-            break
-          case 'strikethrough':
-            result.push('<s>')
-            break
-          case 'underline':
-            result.push('<u>')
-            break
-          case 'text_mention':
-            result.push(`<a href="tg://user?id=${entity.user.id}">`)
-            break
-          case 'text_link':
-            result.push(`<a href="${entity.url}">`)
-            break
-          case 'spoiler':
-            result.push('<tg-spoiler>')
-            break            
-        }
-        opened.unshift(entity)
-        available.splice(index, 1)
-      }
-
-      result.push(escapeHTML(text[offset]))
-
-      while (true) {
-        const index = opened.findIndex((entity) => entity.offset + entity.length - 1 === offset)
-        if (index === -1) {
+        case 'italic':
+          html.push(`<i>${text_}</i>`)
           break
-        }
-        const entity = opened[index]
-        switch (entity.type) {
-          case 'bold':
-            result.push('</b>')
-            break
-          case 'italic':
-            result.push('</i>')
-            break
-          case 'code':
-            result.push('</code>')
-            break
-          case 'pre':
-            if (entity.language) {
-              result.push('</code></pre>')
-            } else {
-              result.push('</pre>')
-            }
-            break
-          case 'strikethrough':
-            result.push('</s>')
-            break
-          case 'underline':
-            result.push('</u>')
-            break
-          case 'text_mention':
-          case 'text_link':
-            result.push('</a>')
-            break
-          case 'spoiler':
-            result.push('</tg-spoiler>')
-            break
-        }
-        opened.splice(index, 1)
+        case 'underline':
+          html.push(`<u>${text_}</u>`)
+          break
+        case 'strikethrough':
+          html.push(`<s>${text_}</s>`)
+          break
+        case 'text_link':
+          html.push(`<a href="${entity.url}">${text_}</a>`)
+          break
+        case 'text_mention':
+          html.push(`<a href="tg://user?id=${entity.user.id}">${text_}</a>`)
+          break
+        case 'spoiler':
+          html.push(`<span class="tg-spoiler">${text_}</span>`)
+          break
+        case 'code':
+          html.push(`<code>${text_}</code>`)
+          break
+        case 'pre':
+          if (entity.language) {
+            html.push(
+              `<pre><code class="language-${entity.language}">${text_}</code></pre>`
+            )
+          } else {
+            html.push(`<pre>${text_}</pre>`)
+          }
+          break
+        default:
+          skipEntity = true
       }
+  
+      lastOffset = relativeOffset + (skipEntity ? 0 : length_)
     }
-    return result.join('')
+  
+    html.push(escape(text.slice(lastOffset, text.length)))
+  
+    return html.join('')
   }
 }
 
-const escapedChars = {
-  '"': '&quot;',
-  '&': '&amp;',
-  '<': '&lt;',
-  '>': '&gt;'
-}
-
-function escapeHTML (string) {
-  const chars = [...string]
-  return chars.map(char => escapedChars[char] || char).join('')
+function escape(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, "&quot;").replace(/'/g, "&#x27;");
 }
 
 function buildKeyboard (buttons, options) {
