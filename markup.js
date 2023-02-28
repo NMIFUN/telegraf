@@ -176,6 +176,10 @@ class Markup {
     }
   }
 
+  static webAppButton (text, web_app, hide = false) {
+    return { text: text, web_app, hide: hide }
+  }
+  
   static formatHTML (text = '', entities = []) {
     if (!text) return text
     else if (!entities?.length) return escape(text)
