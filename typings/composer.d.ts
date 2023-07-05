@@ -2,6 +2,7 @@
 
 import * as tt from './telegram-types.d'
 import { TelegrafContext } from './context'
+import { Router, RouteFn } from "./router"
 
 type MaybeArray<T> = T | T[]
 type MaybePromise<T> = T | Promise<T>
@@ -23,11 +24,12 @@ export interface MiddlewareFn<TContext extends TelegrafContext> {
 }
 
 export interface MiddlewareObj<TContext extends TelegrafContext> {
-  middleware(): MiddlewareFn<TContext>
+  middleware(): MiddlewareFn<TContext> | RouteFn<TContext>
 }
 
 export type Middleware<TContext extends TelegrafContext> =
   | MiddlewareFn<TContext>
+  | RouteFn<TContext>
   | MiddlewareObj<TContext>
 
 export declare class Composer<TContext extends TelegrafContext>

@@ -1,4 +1,3 @@
-import { type } from 'os'
 import * as TT from 'typegram'
 export * from 'typegram'
 
@@ -33,7 +32,9 @@ export type UpdateType =
   'pre_checkout_query' |
   'shipping_query' |
   'poll' |
-  'poll_answer'
+  'poll_answer' |
+  'chat_join_request' |
+  'my_chat_member'
 
 export type MessageSubTypes =
   'voice' |
