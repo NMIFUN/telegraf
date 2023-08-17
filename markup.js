@@ -180,7 +180,7 @@ class Markup {
     return { text: text, web_app, hide: hide }
   }
   
-  static formatHTML (text = '', entities = []) {
+  static formatHTML (text = '', entities = [], offset = 0, length = 0) {
     if (!text) return text
     else if (!entities?.length) return escape(text)
   
